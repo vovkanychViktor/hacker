@@ -3,9 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RemoteData {
-  static List<ListModel> personsList = [];
-
-  static Future<void> getPersons({required final int page}) async {
+  static Future<List<ListModel>> getPersons({required final int page}) async {
     try {
       // request is https://rickandmortyapi.com/api/character/?page=2'
       //response is json with persons from page2
@@ -19,10 +17,11 @@ class RemoteData {
             (result) => ListModel.fromJson(result),
           )
           .toList();
-      personsList = values;
       print(values);
+      return values;
     } catch (e) {
       print('Error: $e');
+      return [];
     }
   }
 }

@@ -14,6 +14,25 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isLoading = false;
   List<ListModel> personsList = [];
 
+  Future<void> _getPersons() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      List<ListModel> getPersons = await RemoteData.getPersons(page: 4);
+      setState(() {
+        personsList = getPersons;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+    {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                RemoteData.getPersons(page: 4);
+                _getPersons();
               },
               child: const Text('Get persons by page'),
             ),
